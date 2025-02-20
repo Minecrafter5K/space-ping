@@ -1,42 +1,26 @@
 import React from "react";
 import { type Moon } from "src/interfaces/moon";
-import SatelliteComponent from "./Satellite";
 
 interface MoonProps {
   moon: Moon;
 }
 
 const MoonComponent: React.FC<MoonProps> = ({ moon }) => {
-  const moonSize = moon.size * 2;
-
   return (
-    <div
-      className="absolute rounded-full border-gray-500"
-      style={{
-        width: moon.orbitRadius * 2,
-        height: moon.orbitRadius * 2,
-        marginLeft: -moon.orbitRadius,
-        marginTop: -moon.orbitRadius,
-        animation: `orbit ${moon.orbitDuration}s linear infinite`,
-        left: "50%",
-        top: "50%",
-      }}
-    >
-      <div
-        className="absolute rounded-full"
-        style={{
-          backgroundColor: moon.color,
-          width: moonSize,
-          height: moonSize,
-          top: ` -${moonSize / 2}px`,
-          left: `calc(50% - ${moonSize / 2}px)`,
-        }}
-      >
-        {/* {moon.satellites?.map((satellite) => (
-          <SatelliteComponent key={satellite.id} satellite={satellite} />
-        ))} */}
-      </div>
-    </div>
+    <g>
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        from={`0 0 0`}
+        to={`360 0 0`}
+        dur={`${moon.orbitDuration}s`}
+        repeatCount="indefinite"
+      />
+      <circle cx={moon.orbitRadius} cy={0} r={moon.size} fill={moon.color} />
+      {/*
+        Falls Satelliten hinzugefügt werden sollen, können hier SatelliteComponent(s) als <g> eingebettet werden.
+        */}
+    </g>
   );
 };
 

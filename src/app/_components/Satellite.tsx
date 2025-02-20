@@ -5,33 +5,26 @@ interface SatelliteProps {
   satellite: Satellite;
 }
 
-const satelliteDotSize = 6; // Diameter of the satellite dot in pixels
+const satelliteDotSize = 6;
 
 const SatelliteComponent: React.FC<SatelliteProps> = ({ satellite }) => {
   return (
-    <div
-      className="absolute rounded-full"
-      style={{
-        width: satellite.orbitRadius * 2,
-        height: satellite.orbitRadius * 2,
-        marginLeft: -satellite.orbitRadius,
-        marginTop: -satellite.orbitRadius,
-        animation: `orbit ${satellite.orbitDuration}s linear infinite`,
-        left: "50%",
-        top: "50%",
-      }}
-    >
-      <div
-        className="absolute rounded-full"
-        style={{
-          backgroundColor: satellite.color,
-          width: satelliteDotSize,
-          height: satelliteDotSize,
-          top: ` -${satelliteDotSize / 2}px`,
-          left: `calc(50% - ${satelliteDotSize / 2}px)`,
-        }}
-      ></div>
-    </div>
+    <g>
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        from={`0 0 0`}
+        to={`360 0 0`}
+        dur={`${satellite.orbitDuration}s`}
+        repeatCount="indefinite"
+      />
+      <circle
+        cx={satellite.orbitRadius}
+        cy={0}
+        r={satelliteDotSize / 2}
+        fill={satellite.color}
+      />
+    </g>
   );
 };
 

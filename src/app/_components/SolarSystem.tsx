@@ -3,6 +3,8 @@
 import React from "react";
 import { type Planet } from "src/interfaces/planet";
 import PlanetComponent from "./Planet";
+import ConnectionComponent from "./Connection";
+import { Connection } from "tristanjockel/interfaces/connection";
 
 const planets: Planet[] = [
   {
@@ -99,15 +101,57 @@ const planets: Planet[] = [
   },
 ];
 
+const connections: Connection[] = [
+  {
+    id: "connection-0",
+    latency: "30ms",
+    endpoint1: "planet-0",
+    endpoint2: "planet-1",
+  },
+  {
+    id: "connection-1",
+    latency: "40ms",
+    endpoint1: "planet-1",
+    endpoint2: "planet-2",
+  },
+  {
+    id: "connection-2",
+    latency: "50ms",
+    endpoint1: "planet-0",
+    endpoint2: "planet-2",
+  },
+  {
+    id: "connection-3",
+    latency: "10ms",
+    endpoint1: "planet-2",
+    endpoint2: "moon-1",
+  },
+  {
+    id: "connection-4",
+    latency: "500ms",
+    endpoint1: "moon-1",
+    endpoint2: "planet-3",
+  },
+];
+
 export default function SolarSystem() {
   return (
-    <div className="relative h-[600px] w-[600px] rounded-full bg-black">
-      <div className="absolute left-1/2 top-1/2 z-10 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-yellow-500 text-xl" />
-
-      {planets.map((planet) => (
-        <PlanetComponent key={planet.id} planet={planet} />
+    <svg width="600" height="600">
+      {/* Mittelpunkt (Sonne) */}
+      <circle cx="300" cy="300" r="20" fill="yellow" />
+      <g transform="translate(300,300)">
+        {planets.map((planet) => (
+          <PlanetComponent key={planet.id} planet={planet} />
+        ))}
+      </g>
+      {/* Verbindungen zwischen Planeten/Monde */}
+      {connections.map((connection) => (
+        <ConnectionComponent
+          key={connection.id}
+          connection={connection}
+          planets={planets}
+        />
       ))}
-
       <style jsx global>{`
         @keyframes orbit {
           from {
@@ -118,6 +162,6 @@ export default function SolarSystem() {
           }
         }
       `}</style>
-    </div>
+    </svg>
   );
 }
