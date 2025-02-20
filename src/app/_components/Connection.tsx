@@ -70,14 +70,35 @@ export default function ConnectionComponent({
 
   if (!pos1 || !pos2) return null;
 
+  // Berechne den Mittelpunkt der Linie
+  const midX = (pos1.x + pos2.x) / 2;
+  const midY = (pos1.y + pos2.y) / 2;
+  // Berechne den Winkel in Grad
+  const angleRad = Math.atan2(pos2.y - pos1.y, pos2.x - pos1.x);
+  const angleDeg = (angleRad * 180) / Math.PI;
+  // Drehe den Text um 180°, falls er "auf dem Kopf" steht.
+  const rotation = angleDeg > 90 || angleDeg < -90 ? angleDeg + 180 : angleDeg;
+
   return (
-    <line
-      x1={pos1.x}
-      y1={pos1.y}
-      x2={pos2.x}
-      y2={pos2.y}
-      stroke="white"
-      // strokeDasharray="5,5"
-    />
+    <>
+      <line
+        x1={pos1.x}
+        y1={pos1.y}
+        x2={pos2.x}
+        y2={pos2.y}
+        stroke="white"
+        strokeDasharray="5,5"
+      />
+      <text
+        x={midX}
+        y={midY}
+        fill="white"
+        textAnchor="middle"
+        alignmentBaseline="middle"
+        transform={`rotate(${rotation}, ${midX}, ${midY}) translate(0, -10)`}
+      >
+        {connection.latency}
+      </text>
+    </>
   );
 }
